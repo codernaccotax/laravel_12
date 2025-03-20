@@ -25,9 +25,12 @@ class AuthController extends Controller
                 'employee_id' => $request->employee_id,
 
             ]);
-            //$user=array('name'=>$request->name,"email"=>$request->email,"password"=>$request->password,"employee_id"=>$request->employee_id);
+            
+
             if($user){
-                return ResponseHelper::success($user, 'User registered successfully',201);
+                // Optionally, generate an authentication token for the user
+                $token = $user->createToken('auth_token')->plainTextToken;
+                return ResponseHelper::success(array('user'=>$user,'token'=>$token), 'User registered successfully',201);
             }else{
                 return ResponseHelper::error('Failed to register user');
             }
