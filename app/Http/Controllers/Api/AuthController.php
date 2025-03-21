@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helper\ResponseHelper;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterRequest;
 use Exception;
 use App\Models\User;
+use App\Helper\ResponseHelper;
+use App\Http\Requests\LoginRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
 
 
 class AuthController extends Controller
@@ -25,6 +27,7 @@ class AuthController extends Controller
                 'employee_id' => $request->employee_id,
 
             ]);
+
             
 
             if($user){
@@ -39,6 +42,26 @@ class AuthController extends Controller
         }
 
     }
+
+    public function login(LoginRequest $request){
+        
+        try{
+            // Attempt to authenticate the user
+            if (!Auth::attempt($request->only('email', 'password'))) {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
+
+            // Get the authenticated user
+            $user = Auth::user();
+
+            // Generate a new token for API authentication (Using Laravel Sanctum)
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return ResponseHelper::success(array('user'=>$user,'token'=>$token), 'login successfully',200);
+        }catch(Exception $e){
+            return ResponseHelper::error($e->getMessage());
+        }
+    }
+
 
 
 }
