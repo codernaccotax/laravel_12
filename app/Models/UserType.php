@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $user_type_name
@@ -26,4 +26,6 @@ class UserType extends Model
 {
     /** @use HasFactory<\Database\Factories\UserTypeFactory> */
     use HasFactory;
+
+    
 }

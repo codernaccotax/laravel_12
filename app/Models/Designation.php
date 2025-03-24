@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $designation_name
@@ -26,4 +26,12 @@ class Designation extends Model
 {
     /** @use HasFactory<\Database\Factories\DesignationFactory> */
     use HasFactory;
+    protected $guarded = ['id'];
+    protected $hidden = [
+        "inforce","created_at","updated_at"
+    ];
+
+    public function employees(){
+        return $this->hasMany(Employee::class,'designation_id');
+    }
 }

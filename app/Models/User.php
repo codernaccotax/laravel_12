@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $email
@@ -63,10 +63,20 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $guarded = ['id'];
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    public function user_type(){
+        return $this->belongsTo('App\Models\UserType','user_type_id');
+    }
+    
+    public function employee(){
+        return $this->belongsTo('App\Models\Employee','employee_id');
+    }
 
     /**
      * Get the attributes that should be cast.

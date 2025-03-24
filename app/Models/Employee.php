@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $employee_nme
@@ -34,4 +34,16 @@ class Employee extends Model
 {
     /** @use HasFactory<\Database\Factories\EmployeeFactory> */
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+
+    public function department(){
+        return $this->belongsTo('App\Models\Department','department_id');
+    }
+
+    public function designation(){
+        return $this->belongsTo('App\Models\Designation','designation_id');
+    }
+
 }

@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Employee;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $department_name
@@ -26,4 +27,11 @@ class Department extends Model
 {
     /** @use HasFactory<\Database\Factories\DepartmentFactory> */
     use HasFactory;
+    protected $guarded = ['id'];
+    protected $hidden = [
+        "inforce","created_at","updated_at",
+    ];
+    public function employees(){
+        return $this->hasMany(Employee::class,'department_id');
+    }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 
 
 class AuthController extends Controller
@@ -28,7 +29,7 @@ class AuthController extends Controller
 
             ]);
 
-            
+
 
             if($user){
                 // Optionally, generate an authentication token for the user
@@ -44,7 +45,7 @@ class AuthController extends Controller
     }
 
     public function login(LoginRequest $request){
-        
+
         try{
             // Attempt to authenticate the user
             if (!Auth::attempt($request->only('email', 'password'))) {
@@ -56,7 +57,8 @@ class AuthController extends Controller
 
             // Generate a new token for API authentication (Using Laravel Sanctum)
             $token = $user->createToken('auth_token')->plainTextToken;
-            return ResponseHelper::success(array('user'=>$user,'token'=>$token), 'login successfully',200);
+            $userResource = new UserResource($user);
+            return ResponseHelper::success('success','login successfully',array('user'=>$userResource,'token'=>$token),200);
         }catch(Exception $e){
             return ResponseHelper::error($e->getMessage());
         }
